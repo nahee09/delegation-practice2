@@ -23,7 +23,41 @@ const data = [
   }
 ]
 
+//이벤트 위임x
+$('.navigation > li').click(function(e){
+  e.preventDefault(); //stropPropagation과 비슷하게 어디로 넘기지 않음.자기 기능 상실 
+  let index = $(this).index();
+  
+  $('.navigation > li').removeClass('is-active');
+  $(this).addClass('is-active');
+  //attr을 사용해서 속성 바꿔줄 수 있는데 아래처럼 객체를 사용해 설정 가능
+  $('.visual img').attr({
+    'src':`./assets/part01/${data[index].src}`,
+    'alt':data[index].alt
+  })
+})
 
+//이벤트 위임 아님. 위 코드는 아래 코드랑 같은 코드임
+// const list = document.querySelectorAll('.navigation > li');
+// list.forEach((item)=>{
+//   item.addEventListener('click', ()=>{
+    
+//   })
+// })
 
-
+//그럼 이제 이벤트 위임으로 해보겠삼. 
+//on은 addEventListener라고 보면 됨. 
+//아래 'li' 넣어준 부분이 이벤트 위임.
+$('.navigation').on('click', 'li', function(e){
+  e.preventDefault();
+  let index = $(this).attr('data-index');
+  //아래는 위와 똑같음.(index-1만 빼고)
+  $('.navigation > li').removeClass('is-active');
+  $(this).addClass('is-active');
+  //attr을 사용해서 속성 바꿔줄 수 있는데 아래처럼 객체를 사용해 설정 가능
+  $('.visual img').attr({
+    'src':`./assets/part01/${data[index-1].src}`,
+    'alt':data[index-1].alt
+  })
+});
 
